@@ -1,25 +1,27 @@
 from socket import *
 from RSA import RSA
+from decoder import Decoder
 
 class Receiver:
 
     def __init__(self):
+        self.RSA = RSA()
         self.serverSocket = socket(AF_INET, SOCK_STREAM)
-        self.serverSocket.bind(('', 15011))
+        self.serverSocket.bind(('', 12000))
 
     def receive(self):
         self.serverSocket.listen(1)
-        print("Escuchando..")
         connectionSocket, addr = self.serverSocket.accept()
-        self.RSA = RSA(connectionSocket)
         while True:
-            message = connectionSocket.recv(1024).decode()
-            if message == "INIT": 
-                connectionSocket.send(self.RSA.decrypt(message).encode())
-            if message != "INIT":
-                print("El mensaje descifrado que me llego es: ", self.RSA.decrypt(message))
-                connectionSocket.close()
-                break
+            segment = connectionSocket.recv(1024)
+            if(Decoder.isInitiationSegment(segment)):
+                self.RSA.sendPublicKeys(connectionSocket)
+            else:
+                 encryptedMessage = Decoder.processDataSegment(segment)
+                 decryptedMessage = self.RSA.decrypt(encryptedMessage)
+                 print(decryptedMessage)
+                 break
+    
 
 receiver = Receiver()
 receiver.receive()

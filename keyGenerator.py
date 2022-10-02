@@ -12,15 +12,15 @@ class KeyGenerator:
         self.phi_n = (self.p-1)*(self.q-1)
 
     def generatePublicKeys(self):
-        for i in range(2, self.phi_n):
+        for i in range(2, self.phi_n - 1):
             if(self.euclidean.mcd(i, self.phi_n) == 1):
-                return (self.n, i)
+                return self.n, i 
 
     def generatePrivateKeys(self, e):
-        return (self.n, self.euclidean.reverse(e, self.phi_n))
+        return self.n, self.euclidean.reverse(e, self.phi_n) 
 
     def generateKeys(self):
-        publicKeys = self.generatePublicKeys()
-        privateKeys = self.generatePrivateKeys(publicKeys[1])
-        return (publicKeys, privateKeys)
+        n, e = self.generatePublicKeys()
+        n, d = self.generatePrivateKeys(e)
+        return n, e, d 
 

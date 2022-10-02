@@ -9,4 +9,5 @@ class EuclideanAlgorithm:
         for x in range(1,module):
             if((number % module)*(x % module) % module == 1):
                 return x
+        return False
 

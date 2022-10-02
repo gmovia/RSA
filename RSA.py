@@ -1,22 +1,25 @@
-from encryptor import Encryptor
-from decryptor import Decryptor
 from keyGenerator import KeyGenerator
+from encoder import Encoder
+from decoder import Decoder
 
 class RSA:
 
-    def __init__(self, clientSocket):
+    def __init__(self):
         self.generator = KeyGenerator()
-        self.publicKeys, self.privateKeys = self.generator.generateKeys()
-        self.encryptor = Encryptor()
-        self.decryptor = Decryptor()
-        self.clientSocket = clientSocket
+        self.n, self.e, self.d = self.generator.generateKeys()
+        self.n_received = 0
+        self.e_received = 0
+
+    def receivePublicKeys(self, socket):
+        socket.send(Encoder.createInitiationSegment())
+        segment = socket.recv(1024)
+        self.n_received, self.e_received = Decoder.processPublicKeysSegment(segment)
+
+    def sendPublicKeys(self, socket):
+        socket.send(Encoder.createPublicKeysSegment(self.n, self.e))
 
     def encrypt(self, message):
-        self.clientSocket.send("INIT".encode())
-        receiversPublicKeys = self.clientSocket.recv(1024).decode().split()
-        return self.encryptor.encrypt(message, int(receiversPublicKeys[0]), int(receiversPublicKeys[1])) # (n, e)
+        return pow(message, self.e_received, self.n_received)
 
     def decrypt(self, encryptedMessage):
-        if(encryptedMessage == "INIT"):
-            return str(self.publicKeys[0])+" "+str(self.publicKeys[1])
-        return self.decryptor.decrypt(int(encryptedMessage), self.privateKeys[0], self.privateKeys[1]) # (n, d)
+        return pow(encryptedMessage, self.d, self.n)
