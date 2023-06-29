@@ -1,5 +1,5 @@
 import unittest
-from primeNumberGenerator import PrimeNumberGenerator
+from src.primeNumberGenerator import PrimeNumberGenerator
 
 class TestsPrimeNumberGenerator(unittest.TestCase):
 
@@ -16,6 +16,3 @@ class TestsPrimeNumberGenerator(unittest.TestCase):
         for i in range(100):
             randomNumber = generator.generate()
             self.assertTrue(generator.isPrime(randomNumber))
-
-if __name__ == '__main__':
-    unittest.main()

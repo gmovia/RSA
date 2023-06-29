@@ -1,5 +1,5 @@
 import unittest
-from RSA import RSA
+from src.RSA import RSA
 
 class TestRSA(unittest.TestCase):
 
@@ -28,6 +28,3 @@ class TestRSA(unittest.TestCase):
         rsa.n = 1416383 
         rsa.d = 1211863
         self.assertEqual(rsa.decrypt(331502), 1234567)
-
-if __name__ == '__main__':
-    unittest.main()

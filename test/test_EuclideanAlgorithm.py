@@ -1,5 +1,5 @@
 import unittest
-from euclideanAlgorithm import EuclideanAlgorithm
+from src.euclideanAlgorithm import EuclideanAlgorithm
 
 class TestEuclideanAlgorithm(unittest.TestCase):
 
@@ -34,6 +34,3 @@ class TestEuclideanAlgorithm(unittest.TestCase):
     def test08_theReverse2915inModule9Is8(self):
         euclidean = EuclideanAlgorithm()
         self.assertEquals(euclidean.reverse(2915, 9), 8)
-
-if __name__ == '__main__':
-    unittest.main()

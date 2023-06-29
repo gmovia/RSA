@@ -1,6 +1,6 @@
 import unittest
-from keyGenerator import KeyGenerator
-from euclideanAlgorithm import EuclideanAlgorithm
+from src.keyGenerator import KeyGenerator
+from src.euclideanAlgorithm import EuclideanAlgorithm
 
 class TestKeyGenerator(unittest.TestCase):
 
@@ -15,6 +15,3 @@ class TestKeyGenerator(unittest.TestCase):
         euclidean = EuclideanAlgorithm()
         n, e, d = generator.generateKeys()
         self.assertEquals(euclidean.reverse(e, generator.phi_n), d)
-
-if __name__ == '__main__':
-    unittest.main()
